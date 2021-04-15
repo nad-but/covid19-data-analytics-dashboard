@@ -41,6 +41,7 @@ if my_model == 'Information about COVID-19 pandemic':
  
 
     st.write('## ⚠️ Information about COVID-19 pandemic⚠️')
+    st.video('https://www.youtube.com/watch?v=U8r3oTVMtQ0')
     st.write('### ⭕ A detailed overview of the pandemic:⭕')
     st.write('Coronaviruses are a large family of enveloped, non-segmented, single-stranded, positive-sense RNA viruses that circulate among animals including camels, cats,  and bats. Coronaviruses derive their name from their electron microscopic image,which resembles a crown – or corona.Six strains of coronavirus have infected humans, four of which are together responsible for about one-third of common colds. In the past two decades, there have been three global coronavirus outbreaks')
     st.write('### ⭕ When it began and where it appeared:⭕ ')
