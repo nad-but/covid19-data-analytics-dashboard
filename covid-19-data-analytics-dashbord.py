@@ -136,21 +136,21 @@ elif my_model == 'Select Certain Country for Different Type of Cases':
     x="month(Date)",
     y=alt.Y("Confirmed",title="infection cases"),
     column="year(Date)" ,
-    tooltip=['sum(Confirmed)']
+    tooltip=['Confirmed']
     ).interactive()
 
     death= alt.Chart(covid19_DataFram[covid19_DataFram["Country/Region"]== select_country]).encode(
      x="month(Date)",
      y=alt.Y("deaths",title="Deaths cases"),
      column="year(Date)",
-     tooltip=['sum(deaths)']
+     tooltip=['deaths']
     ).interactive()
 
     Recovered= alt.Chart(recov[recov["Country/Region"]== select_country]).encode(
     x="month(Date)",
     y=alt.Y("recovered",title="Recovered cases"),
     column="year(Date)",
-    tooltip=['sum(recovered)']
+    tooltip=['recovered']
     ).interactive()
 
     if select_option == 'Infection':
