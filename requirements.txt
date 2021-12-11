@@ -5,6 +5,7 @@ plotly==5.4.0
 tokenizers==0.5.2
 streamlit-folium==0.4.0
 streamlit==1.1.0
+pycaret==2.3.5
 pycaret_ts_alpha==3.0.0.dev1638407153
 folium==0.12.1.post1
 geopandas 
