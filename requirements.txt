@@ -9,3 +9,4 @@ pycaret_ts_alpha==3.0.0.dev1638407153
 folium==0.12.1.post1
 geopandas 
 geos==0.2.3
+bs4==0.0.1
