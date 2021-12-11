@@ -7,3 +7,4 @@ streamlit-folium==0.4.0
 streamlit==1.1.0
 pycaret_ts_alpha==3.0.0.dev1638407153
 folium==0.12.1.post1
+geopandas @ file:///C:/Users/LENOVO/Downloads/geopandas-0.10.2-py2.py3-none-any.whl
