@@ -50,7 +50,7 @@ def load_data():
  newcases.columns=['Country/Region','Date','New Cases','New Deaths']
  covid19_DataFram = pd.merge(covid19_DataFram, newcases, on=['Country/Region', 'Date'])
  covid19_DataFram[['New Cases','New Deaths']]=covid19_DataFram[['New Cases','New Deaths']].fillna(0)
- covid19_DataFram[['New Cases','New Deaths']]=covid19_DataFram[['New Cases','New Deaths']].astype(int)
+ #covid19_DataFram[['New Cases','New Deaths']]=covid19_DataFram[['New Cases','New Deaths']].astype(int)
  
  url_vaccin='https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/vaccinations/vaccinations.csv'
  covid_vaccin=pd.read_csv(url_vaccin)
