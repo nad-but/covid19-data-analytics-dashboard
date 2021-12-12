@@ -10,5 +10,4 @@ geopandas
 geos==0.2.3
 bs4==0.0.1
 pycaret
-pycaret[full]
 pycaret-ts-alpha
