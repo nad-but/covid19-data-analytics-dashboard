@@ -50,7 +50,7 @@ def load_data():
  newcases.columns=['Country/Region','Date','New Cases','New Deaths']
  covid19_DataFram = pd.merge(covid19_DataFram, newcases, on=['Country/Region', 'Date'])
  covid19_DataFram[['New Cases','New Deaths']]=covid19_DataFram[['New Cases','New Deaths']].fillna(0)
- #covid19_DataFram[['New Cases','New Deaths']]=covid19_DataFram[['New Cases','New Deaths']].astype(int)
+ 
  
  url_vaccin='https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/vaccinations/vaccinations.csv'
  covid_vaccin=pd.read_csv(url_vaccin)
@@ -86,7 +86,7 @@ oldcovid19_DataFram,covid19_DataFram,recov,covid_vaccin,population=load_data()
 
 
 st.sidebar.header("Covid-19 Data Analytics Dashbord") 
-my_model= st.sidebar.radio('choose model:',('World Map','Information about COVID-19 pandemic','The Most','Country wise analysis','Cumulative Data Visuals',"Oman Cases",'Compare Countries','Vaccination',"Forcasting","Search",'Help'))
+my_model= st.sidebar.radio('choose model:',('World Map','Information about COVID-19 pandemic','The Most','Country wise analysis','Cumulative Data Visuals',"Oman Cases",'Compare Countries','Vaccination',"Forecasting","Search",'Help'))
 st.sidebar.write('### Done by: Nadhira Albattashi and Buthaina ALsiyabi')
 
 if my_model == "World Map":
@@ -228,7 +228,7 @@ if my_model == "World Map":
                       columns=['name','Confirmed'],
                       color='Confirmed',
                       key_on="feature.properties.name",
-                      fill_color='YlGnBu',
+                      fill_color='Set1',
                       highlight=True).add_to(locat)
 
     style_function = lambda x: {'fillColor': '#ffffff', 
@@ -260,6 +260,7 @@ elif my_model =='Oman Cases':
     st.write("\n")
     st.write("\n")
     st.write("\n")
+    covid19_DataFram[['New Cases','New Deaths']]=covid19_DataFram[['New Cases','New Deaths']].astype(int)
 
     Omancases=covid19_DataFram[covid19_DataFram['Country/Region']=='Oman']
     Omanvaccin=covid_vaccin[covid_vaccin['location']=='Oman']
@@ -421,7 +422,7 @@ elif my_model =='Oman Cases':
        st.write("## View deaths for Oman")
        st.altair_chart(deathsDate+deathsDatetext)
 
-    ques=st.selectbox("Choose a question", ['Oman Map',"Dates with the most new cases",'Dates with the most new deaths',"Most month New Cases","Most month New Deaths","Information about Oman"])
+    ques=st.selectbox("select your option:", ['Oman Map',"Dates with the most new cases",'Dates with the most new deaths',"Most month New Cases","Most month New Deaths","Information about Oman"])
 
     if ques =='Oman Map':
          
@@ -531,7 +532,7 @@ elif my_model =='Oman Cases':
                           columns=['name','confirmed'],
                           color='confirmed',
                           key_on="feature.properties.name",
-                          fill_color='YlGnBu',
+                          fill_color='Dark2',
                           highlight=True).add_to(mm)
 
         style_function = lambda x: {'fillColor': '#ffffff', 
@@ -956,7 +957,7 @@ elif my_model == 'Cumulative Data Visuals':
     st.markdown("<h1 style='text-align: center;'>Cumulative infection cases /deaths/recovered through months of the year</h1>", unsafe_allow_html=True)
 
 
-    times=['Cumulative infection cases','Cumulative deaths','Cumulative recovered']
+    times=['Cumulative Confirmed cases','Cumulative deaths','Cumulative recovered']
 
     timeseries=st.selectbox('Select your option', times)
 
@@ -988,7 +989,7 @@ elif my_model == 'Cumulative Data Visuals':
     tooltip=['recovered',"Date"]
     ).interactive()
 
-    if timeseries == 'Cumulative infection cases':
+    if timeseries == 'Cumulative Confirmed cases':
       if selectchart == 'Line Chart':
         st.altair_chart(infectionCases.mark_line())
         cumulativevalue=groupbydate['Confirmed'].tail(1).to_string(index=False)
@@ -1359,7 +1360,7 @@ elif my_model == 'Vaccination':
          st.altair_chart(people.mark_area(color='maroon'))
          value=lastvalue['people_vaccinated']
          value=int(value)
-         pop=perc['Population (2020)']
+         pop=perc['population']
          pop=int(pop)
          percent=(value/pop)*100
          percent=int(percent)
@@ -1368,7 +1369,7 @@ elif my_model == 'Vaccination':
          st.altair_chart(completed.mark_area(color='crimson'))
          value=lastvalue['people_fully_vaccinated']
          value=int(value)
-         pop=perc['Population (2020)']
+         pop=perc['population']
          pop=int(pop)
          percent=(value/pop)*100
          percent=int(percent)
@@ -1468,8 +1469,8 @@ elif my_model == 'Vaccination':
         st.altair_chart(fully+vacc_daily+recovvsvacc+dailyvacc)
         st.write(f' 🟩 Total People Fully Vaccinated are {fullyvalue}, 🟫 daily vaccinations {dailyvaccvalue},🟥 Total Recovered are {recoveredvalue},🟦New Recovered  are {newrecoveredvalue}')
      
-elif my_model == "Forcasting":
-    st.markdown("<h1 style='text-align: center;'>Forcasting</h1>", unsafe_allow_html=True)
+elif my_model == "Forecasting":
+    st.markdown("<h1 style='text-align: center;'>Forecasting</h1>", unsafe_allow_html=True)
 
     selectionbox=st.selectbox("Select Option:",["New cases forecasting","New death forecasting "])
 
@@ -1748,74 +1749,8 @@ elif my_model == "Search":
     st.write(f"## Daily vaccinations in **{choosecountry}** ") 
     st.altair_chart(search_dailyvacc.mark_line(color='green'))
     
-    
-    st.write("# Search About Information")
-    
-    tokenizer = DistilBertTokenizer.from_pretrained('distilbert-base-uncased',return_token_type_ids = True)
-    model = DistilBertForQuestionAnswering.from_pretrained('distilbert-base-uncased-distilled-squad')
-
-    context = "Corona viruses are a group of viruses that can cause diseases such as the common cold, severe acute respiratory syndrome (SARS) and Middle East respiratory syndrome (Mers). " \
-              "But, a new type of corona virus has been discovered after it was identified as the cause of the spread of a disease that began in China in 2019." \
-              "The virus is now known as ,Severe Acute Respiratory Syndrome Virus 2, and is denoted as SARS-CoV-2. The resulting disease is called coronavirus disease 2019 (COVID-19)." \
-              "In March 2020, the World Health Organization (WHO) announced that it had classified the COVID-19 pandemic as a pandemic"\
-              "Pandemic public health groups monitor and post updates online, including the US Centers for Disease Control and Prevention (CDC) and the World Health Organization (WHO)."\
-              "These groups also issued recommendations about the prevention and treatment of the disease,"\
-              "Signs and symptoms of COVID-19 may appear two to 14 days after exposure. The period after exposure to the virus and before symptoms appear is called the incubation period. " \
-              "Common signs and symptoms may include Fever, cough and feeling tired."\
-              "However, the above list does not include all symptoms, it is not exhaustive."\
-              "Also, Children have symptoms similar to those of adults and generally have some degree of illness."\
-              "Symptoms of COVID-19 can range from very mild to severe. Some people may have only a few symptoms, while others have no symptoms at all."\
-              "Some people may feel a worsening of symptoms about a week after they start, such as worsening shortness of breath and pneumonia."\
-              "But the question is, how can I protect myself from this epidemic? Get vaccinated when you qualify."\
-              "Wear masks whenever required. Currently, if you live in an area with higher rates of COVID-19 transmission,"\
-              "wear masks indoors with people outside of your immediate family, even if you have been vaccinated. Consider wearing it outdoors if you'll be in a large group of people."\
-              "Practice physical distancing (staying at least six feet away from others)."\
-              "Avoid crowds and poorly ventilated places.Wash or sanitize your hands with an alcohol-based gel frequently.Cover coughs and sneezes with the inside of your elbow."\
-              "Clean and disinfect high-touch surfaces.Monitor your health daily. If you have any symptoms related to COVID-19, stay at home except for testing for the virus."\
-              #"The best way to treat disease is prevention, so get vaccinated when you qualify. Since COVID-19 is caused by a virus, antibiotics will not work."\
-              #"Few treatments have been developed for the disease, but their effectiveness varies. Long-term complications can arise from COVID-19, and there is no known treatment yet on how to reduce this risk." \
-              #"As for the vaccine, it protects you from contracting COVID-19 or from getting serious illness or death from COVID-19Preventing the spread of COVID-19 to others"\
-              #"The number of vaccinated community members increases against COVID-19 - which slows the spread of the disease and contributes to herd immunity (so-called herd immunity) Preventing the virus that causes COVID-19"\
-              #" from spreading and replication, the two processes that allow it to form a mutation that may be better able to resist vaccines"\
-              #"Currently, there are several vaccines for COVID-19 that are undergoing clinical trials. The US Food and Drug Administration continues to evaluate the results of these trials before approving or licensing the use of Covid-19 vaccines. "\
-              #"But due to the urgent need for COVID-19 vaccines, and because the FDA approval process can take anywhere from several months to several years, the FDA initially issued an emergency use authorization for COVID-19 vaccines based on less data than is usually required. "\
-              #"Data must show that vaccines are safe and effective before the FDA can issue an emergency use approval or authorization. Vaccines with FDA approval or emergency use authorization include:"\
-              #"Pfizer-Bioentiq vaccine for COVID-19. The US Food and Drug Administration has approved the Pfizer-Bioentiq vaccine, now called Comirnaty, to prevent COVID-19 in people 16 years of age and older."\
-              #"The U.S. Food and Drug Administration approved the Comirnaty vaccine after data found it to be safe and effective. The Pfizer-Biointech vaccine is 91% effective in preventing symptoms of COVID-19 infection in people 16 years of age and older."\
-              #"Also, the Moderna vaccine for Covid 19. The Covid 19 vaccine produced by Moderna is 94% effective in preventing symptoms of Covid 19. This vaccine is approved for"\
-              #"use in persons 18 years of age and over. It takes two injections 28 days apart. The second dose may be given up to six weeks after the first dose, if needed."\
-              #"Janssen/Johnson & Johnson COVID-19 vaccine. In clinical trials, this vaccine was 66% effective in preventing symptomatic COVID-19 infection, 14 days after vaccination."\
-              #"The vaccine was also 85% effective in preventing severe COVID-19, at least "\
-              #"28 days after receiving the vaccine. This vaccine is licensed for persons 18 years of age and older. It requires one injection. The US Food and Drug Administration (FDA) and the Centers for Disease"\
-              #"Control and Prevention (CDC) have recommended continued use of this vaccine in the United States because the benefits outweigh the risks."\
-              #"If you take this vaccine, you should be educated about the potential risks and possible symptoms of a problem involving blood clotting."\
-              #"Finally, if you have any signs of an allergic reaction, seek help immediately. Tell your doctor about your allergic reaction, even if it goes away on its own or if you don't get emergency care." \
-              #"This reaction may mean that you are allergic to the vaccine. You may not be able to get a "\
-              #"second dose of the same vaccine. However, you may be able to get a different type of vaccine when you take the second dose."
-                  
-    question =st.text_input("Enter Your Question") 
-
-    encoding = tokenizer.encode_plus(question, context)
-
-
-    input_ids= encoding["input_ids"]
-    attention_mask = encoding["attention_mask"]
-
-    start_scores, end_scores = model(torch.tensor([input_ids]), attention_mask=torch.tensor([attention_mask]))
-
-    ans_tokens = input_ids[torch.argmax(start_scores) : torch.argmax(end_scores)+1]
-    answer_tokens = tokenizer.convert_ids_to_tokens(ans_tokens , skip_special_tokens=True)
-
-    st.write("\nQuestion ",question)
-    st.write("\nAnswer Tokens: ")
-    st.write(answer_tokens)
-
-    answer_tokens_to_string = tokenizer.convert_tokens_to_string(answer_tokens)
-
-    st.write("\nAnswer : ",answer_tokens_to_string)
-    
 else:   
-     dropdown=st.selectbox('select your options:', ['Videos related  to Covid-19', 'Web Links about Covid-19', 'References used in the Project', 'Covid question answering'])
+     dropdown=st.selectbox('select your options:', ['Videos related  to Covid-19',"Search About Information", 'Web Links about Covid-19', 'References used in the Project', 'Covid question answering'])
      if dropdown =='Videos related  to Covid-19':
         st.write('### 1. Coronavirus disease (COVID-19)')
         st.video('https://www.youtube.com/watch?v=i0ZabxXmH4Y')
@@ -1833,6 +1768,79 @@ else:
         st.video('https://www.youtube.com/watch?v=v-NEr3KCug8')
         st.write('### 8. How to treat covid-19 | The Economist')
         st.video('https://youtu.be/jDCnaN9PXBE')
+     elif dropdown == "Search About Information":
+        tokenizer = DistilBertTokenizer.from_pretrained('distilbert-base-uncased',return_token_type_ids = True)
+        model = DistilBertForQuestionAnswering.from_pretrained('distilbert-base-uncased-distilled-squad')
+
+        context = "Corona viruses are a group of viruses that can cause diseases such as the common cold, severe acute respiratory syndrome (SARS) and Middle East respiratory syndrome (Mers). " \
+                  "But, a new type of corona virus has been discovered after it was identified as the cause of the spread of a disease that began in China in 2019." \
+                  "The virus is now known as ,Severe Acute Respiratory Syndrome Virus 2, and is denoted as SARS-CoV-2. The resulting disease is called coronavirus disease 2019 (COVID-19)." \
+                  "In March 2020, the World Health Organization (WHO) announced that it had classified the COVID-19 pandemic as a pandemic"\
+                  "Pandemic public health groups monitor and post updates online, including the US Centers for Disease Control and Prevention (CDC) and the World Health Organization (WHO)."\
+                  "These groups also issued recommendations about the prevention and treatment of the disease,"\
+                  "Signs and symptoms of COVID-19 may appear two to 14 days after exposure. The period after exposure to the virus and before symptoms appear is called the incubation period. " \
+                  "Common signs and symptoms may include Fever, cough and feeling tired."\
+                  "However, the above list does not include all symptoms, it is not exhaustive."\
+                  "Also, Children have symptoms similar to those of adults and generally have some degree of illness."\
+                  "Symptoms of COVID-19 can range from very mild to severe. Some people may have only a few symptoms, while others have no symptoms at all."\
+                  "Some people may feel a worsening of symptoms about a week after they start, such as worsening shortness of breath and pneumonia."\
+                  "But the question is, how can I protect myself from this epidemic? Get vaccinated when you qualify."\
+                  "Wear masks whenever required. Currently, if you live in an area with higher rates of COVID-19 transmission,"\
+                  "wear masks indoors with people outside of your immediate family, even if you have been vaccinated. Consider wearing it outdoors if you'll be in a large group of people."\
+                  "Practice physical distancing (staying at least six feet away from others)."\
+                  "Avoid crowds and poorly ventilated places.Wash or sanitize your hands with an alcohol-based gel frequently.Cover coughs and sneezes with the inside of your elbow."\
+                  "Clean and disinfect high-touch surfaces.Monitor your health daily. If you have any symptoms related to COVID-19, stay at home except for testing for the virus."\
+                  #"The best way to treat disease is prevention, so get vaccinated when you qualify. Since COVID-19 is caused by a virus, antibiotics will not work."\
+                  #"Few treatments have been developed for the disease, but their effectiveness varies. Long-term complications can arise from COVID-19, and there is no known treatment yet on how to reduce this risk." \
+                  #"As for the vaccine, it protects you from contracting COVID-19 or from getting serious illness or death from COVID-19Preventing the spread of COVID-19 to others"\
+                  #"The number of vaccinated community members increases against COVID-19 - which slows the spread of the disease and contributes to herd immunity (so-called herd immunity) Preventing the virus that causes COVID-19"\
+                  #" from spreading and replication, the two processes that allow it to form a mutation that may be better able to resist vaccines"\
+                  #"Currently, there are several vaccines for COVID-19 that are undergoing clinical trials. The US Food and Drug Administration continues to evaluate the results of these trials before approving or licensing the use of Covid-19 vaccines. "\
+                  #"But due to the urgent need for COVID-19 vaccines, and because the FDA approval process can take anywhere from several months to several years, the FDA initially issued an emergency use authorization for COVID-19 vaccines based on less data than is usually required. "\
+                  #"Data must show that vaccines are safe and effective before the FDA can issue an emergency use approval or authorization. Vaccines with FDA approval or emergency use authorization include:"\
+                  #"Pfizer-Bioentiq vaccine for COVID-19. The US Food and Drug Administration has approved the Pfizer-Bioentiq vaccine, now called Comirnaty, to prevent COVID-19 in people 16 years of age and older."\
+                  #"The U.S. Food and Drug Administration approved the Comirnaty vaccine after data found it to be safe and effective. The Pfizer-Biointech vaccine is 91% effective in preventing symptoms of COVID-19 infection in people 16 years of age and older."\
+                  #"Also, the Moderna vaccine for Covid 19. The Covid 19 vaccine produced by Moderna is 94% effective in preventing symptoms of Covid 19. This vaccine is approved for"\
+                  #"use in persons 18 years of age and over. It takes two injections 28 days apart. The second dose may be given up to six weeks after the first dose, if needed."\
+                  #"Janssen/Johnson & Johnson COVID-19 vaccine. In clinical trials, this vaccine was 66% effective in preventing symptomatic COVID-19 infection, 14 days after vaccination."\
+                  #"The vaccine was also 85% effective in preventing severe COVID-19, at least "\
+                  #"28 days after receiving the vaccine. This vaccine is licensed for persons 18 years of age and older. It requires one injection. The US Food and Drug Administration (FDA) and the Centers for Disease"\
+                  #"Control and Prevention (CDC) have recommended continued use of this vaccine in the United States because the benefits outweigh the risks."\
+                  #"If you take this vaccine, you should be educated about the potential risks and possible symptoms of a problem involving blood clotting."\
+                  #"Finally, if you have any signs of an allergic reaction, seek help immediately. Tell your doctor about your allergic reaction, even if it goes away on its own or if you don't get emergency care." \
+                  #"This reaction may mean that you are allergic to the vaccine. You may not be able to get a "\
+                  #"second dose of the same vaccine. However, you may be able to get a different type of vaccine when you take the second dose."
+                      
+        question =st.text_input("Enter Your Question") 
+
+        encoding = tokenizer.encode_plus(question, context)
+
+
+        input_ids= encoding["input_ids"]
+        attention_mask = encoding["attention_mask"]
+
+        start_scores, end_scores = model(torch.tensor([input_ids]), attention_mask=torch.tensor([attention_mask]))
+
+        ans_tokens = input_ids[torch.argmax(start_scores) : torch.argmax(end_scores)+1]
+        answer_tokens = tokenizer.convert_ids_to_tokens(ans_tokens , skip_special_tokens=True)
+
+        #st.write("\nQuestion ",question) 
+        #st.write("\nAnswer Tokens: ")
+        #st.write(answer_tokens)
+
+        answer_tokens_to_string = tokenizer.convert_tokens_to_string(answer_tokens)
+
+        #st.write("### \nAnswer : ",answer_tokens_to_string)
+
+        if answer_tokens:
+            st.write("### \nAnswer : ",answer_tokens_to_string)
+        elif question == "":
+            st.write("### \nAnswer : ")
+        else:
+            st.write("##  ⚠️ It seems that there are no results matching your search please try again⚠️❗ ")
+            
+            
+            
          
      elif dropdown == 'Web Links about Covid-19':
         st.write("### 1. Statistics [click here](https://www.worldometers.info/coronavirus/)")
