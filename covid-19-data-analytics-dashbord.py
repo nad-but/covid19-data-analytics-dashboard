@@ -550,7 +550,7 @@ elif my_model =='Oman Cases':
             control=False,
             highlight_function=highlight_function, 
             tooltip=folium.features.GeoJsonTooltip(
-                fields=['name','confirmed','Deaths',"recovered","Deaths",'New_cases',"active"],
+                fields=['name','confirmed','Deaths',"recovered",'New_cases',"active"],
             )
         ).add_to(mm)
         
