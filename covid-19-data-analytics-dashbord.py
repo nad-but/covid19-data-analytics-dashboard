@@ -1477,148 +1477,148 @@ elif my_model == "Forecasting":
     sliderfh=st.slider("chooes:",min_value=1,max_value=30,value=7)
 
     st.write("## Global Prediction of Cases")
-    if selectionbox=="New cases forecasting":
+   # if selectionbox=="New cases forecasting":
         
-         dfcovid=covid19_DataFram[['Date','New Cases']]
-         dfcovid19=dfcovid.groupby('Date').sum()
-         futuerdf=dfcovid19.reset_index()
-         dfcovid19 = dfcovid19.asfreq('D')
-         exp = TimeSeriesExperiment()
-         exp.setup(dfcovid19, fh = sliderfh, fold = 3, session_id = 123)
+       #  dfcovid=covid19_DataFram[['Date','New Cases']]
+        # dfcovid19=dfcovid.groupby('Date').sum()
+        # futuerdf=dfcovid19.reset_index()
+        # dfcovid19 = dfcovid19.asfreq('D')
+        # exp = TimeSeriesExperiment()
+        # exp.setup(dfcovid19, fh = sliderfh, fold = 3, session_id = 123)
          #exp.plot_model(plot = 'ts',display_format='streamlit')
-         model = exp.create_model("ets")
-         tuned_model = exp.tune_model(model, search_algorithm='grid')
+        # model = exp.create_model("ets")
+        # tuned_model = exp.tune_model(model, search_algorithm='grid')
          # Trains the model with the best hyperparameters on the entire dataset now
-         final_model = exp.finalize_model(tuned_model)
-         exp.plot_model(final_model,display_format='streamlit')
-         prodection=exp.predict_model(final_model,round=0)
+        # final_model = exp.finalize_model(tuned_model)
+        # exp.plot_model(final_model,display_format='streamlit')
+        # prodection=exp.predict_model(final_model,round=0)
          
-         prodection.reset_index(drop=True,inplace=True)
-         prodection=pd.DataFrame(prodection)
-         date=futuerdf['Date'].tail(1).to_string(index=False)
-         Date=pd.date_range(start=date,periods=2)
-         Date=pd.DataFrame(Date,columns=["Date"])
-         Date=Date["Date"].tail(1).to_string(index=False)
-         Date=pd.date_range(start=Date,periods=sliderfh)
-         Date=pd.DataFrame(Date,columns=["Date"])
-         prodection=prodection.join(Date['Date'])
-         prodection=prodection[['Date','New Cases']]
-         prodection['Date']=prodection['Date'].dt.date
-         prodection['New Cases']=prodection['New Cases'].astype(int)
-         prodection.index += 1
-         st.write(prodection)
+        # prodection.reset_index(drop=True,inplace=True)
+        # prodection=pd.DataFrame(prodection)
+        # date=futuerdf['Date'].tail(1).to_string(index=False)
+        # Date=pd.date_range(start=date,periods=2)
+        # Date=pd.DataFrame(Date,columns=["Date"])
+        # Date=Date["Date"].tail(1).to_string(index=False)
+        # Date=pd.date_range(start=Date,periods=sliderfh)
+        # Date=pd.DataFrame(Date,columns=["Date"])
+        # prodection=prodection.join(Date['Date'])
+        # prodection=prodection[['Date','New Cases']]
+         #prodection['Date']=prodection['Date'].dt.date
+        # prodection['New Cases']=prodection['New Cases'].astype(int)
+        # prodection.index += 1
+       # st.write(prodection)
          
-         st.download_button(
-         label="Download data as CSV",
-         data=prodection.to_csv(),
-         file_name='production New cases  global.csv',
-             )
-    else:
-         dfcovid=covid19_DataFram[['Date','New Deaths']]
-         dfcovid19=dfcovid.groupby('Date').sum()
-         futuerdf=dfcovid19.reset_index()
-         dfcovid19 = dfcovid19.asfreq('D')
-         exp = TimeSeriesExperiment()
-         exp.setup(dfcovid19, fh = sliderfh, fold = 3, session_id = 123)
+       #  st.download_button(
+        # label="Download data as CSV",
+        # data=prodection.to_csv(),
+         #file_name='production New cases  global.csv',
+          #   )
+    #else:
+     #    dfcovid=covid19_DataFram[['Date','New Deaths']]
+     #    dfcovid19=dfcovid.groupby('Date').sum()
+     #    futuerdf=dfcovid19.reset_index()
+     #    dfcovid19 = dfcovid19.asfreq('D')
+     #    exp = TimeSeriesExperiment()
+      #   exp.setup(dfcovid19, fh = sliderfh, fold = 3, session_id = 123)
          #exp.plot_model(plot = 'ts',display_format='streamlit')
-         model = exp.create_model("ets")
-         tuned_model = exp.tune_model(model, search_algorithm='grid')
+      #   model = exp.create_model("ets")
+       #  tuned_model = exp.tune_model(model, search_algorithm='grid')
          # Trains the model with the best hyperparameters on the entire dataset now
-         final_model = exp.finalize_model(tuned_model)
-         exp.plot_model(final_model,display_format='streamlit')
-         prodection=exp.predict_model(final_model,round=0)
+        # final_model = exp.finalize_model(tuned_model)
+        # exp.plot_model(final_model,display_format='streamlit')
+        # prodection=exp.predict_model(final_model,round=0)
          
-         prodection.reset_index(drop=True,inplace=True)
-         prodection=pd.DataFrame(prodection)
-         date=futuerdf['Date'].tail(1).to_string(index=False)
-         Date=pd.date_range(start=date,periods=2)
-         Date=pd.DataFrame(Date,columns=["Date"])
-         Date=Date["Date"].tail(1).to_string(index=False)
-         Date=pd.date_range(start=Date,periods=sliderfh)
-         Date=pd.DataFrame(Date,columns=["Date"])
-         prodection=prodection.join(Date['Date'])
-         prodection=prodection[['Date','New Deaths']]
-         prodection['Date']=prodection['Date'].dt.date
-         prodection['New Deaths']=prodection['New Deaths'].astype(int)
-         prodection.index += 1
-         st.write(prodection)
-         st.download_button(
-         label="Download data as CSV",
-         data=prodection.to_csv(),
-         file_name='production New death global.csv',
-             )
+        # prodection.reset_index(drop=True,inplace=True)
+        # prodection=pd.DataFrame(prodection)
+        # date=futuerdf['Date'].tail(1).to_string(index=False)
+        # Date=pd.date_range(start=date,periods=2)
+        # Date=pd.DataFrame(Date,columns=["Date"])
+        # Date=Date["Date"].tail(1).to_string(index=False)
+        # Date=pd.date_range(start=Date,periods=sliderfh)
+        # Date=pd.DataFrame(Date,columns=["Date"])
+        # prodection=prodection.join(Date['Date'])
+        # prodection=prodection[['Date','New Deaths']]
+        # prodection['Date']=prodection['Date'].dt.date
+        # prodection['New Deaths']=prodection['New Deaths'].astype(int)
+        # prodection.index += 1
+        # st.write(prodection)
+        # st.download_button(
+        # label="Download data as CSV",
+        # data=prodection.to_csv(),
+         #file_name='production New death global.csv',
+          #   )
 
     st.write("## Country-wise Prediction of Cases")
     selectionbox2=st.selectbox('Select Country: ',covid19_DataFram["Country/Region"].unique())
     dfcountryselection=covid19_DataFram[covid19_DataFram["Country/Region"]== selectionbox2]
-    if selectionbox=="New cases forecasting":
+   # if selectionbox=="New cases forecasting":
         
-         dfcovidNewCases=dfcountryselection[['Date','New Cases']]
-         dfcovidNewCases=dfcovidNewCases.groupby('Date').sum()
-         futuerdf=dfcovid19.reset_index()
-         #dfcovidNewCases=dfcovid19NewCases.asfreq('D')
-         exp = TimeSeriesExperiment()
-         exp.setup(dfcovidNewCases, fh = sliderfh, fold = 3, session_id = 123)
-         #exp.plot_model(plot = 'ts',display_format='streamlit')
-         model = exp.create_model("ets")
-         tuned_model = exp.tune_model(model, search_algorithm='grid')
+     #    dfcovidNewCases=dfcountryselection[['Date','New Cases']]
+      #   dfcovidNewCases=dfcovidNewCases.groupby('Date').sum()
+      #   futuerdf=dfcovid19.reset_index()
+       #  #dfcovidNewCases=dfcovid19NewCases.asfreq('D')
+        # exp = TimeSeriesExperiment()
+     #    exp.setup(dfcovidNewCases, fh = sliderfh, fold = 3, session_id = 123)
+      #   #exp.plot_model(plot = 'ts',display_format='streamlit')
+       #  model = exp.create_model("ets")
+        # tuned_model = exp.tune_model(model, search_algorithm='grid')
          # Trains the model with the best hyperparameters on the entire dataset now
-         final_model = exp.finalize_model(tuned_model)
-         exp.plot_model(final_model,display_format='streamlit')
-         prodection=exp.predict_model(final_model,round=0)
-         prodection.reset_index(drop=True,inplace=True)
-         prodection=pd.DataFrame(prodection)
-         date=futuerdf['Date'].tail(1).to_string(index=False)
-         Date=pd.date_range(start=date,periods=2)
-         Date=pd.DataFrame(Date,columns=["Date"])
-         Date=Date["Date"].tail(1).to_string(index=False)
-         Date=pd.date_range(start=Date,periods=sliderfh)
-         Date=pd.DataFrame(Date,columns=["Date"])
-         prodection=prodection.join(Date['Date'])
-         prodection=prodection[['Date','New Cases']]
-         prodection['Date']=prodection['Date'].dt.date
-         prodection['New Cases']=prodection['New Cases'].astype(int)
-         prodection.index += 1
-         st.write(prodection)
-         st.download_button(
-         label="Download data as CSV",
-         data=prodection.to_csv(),
-         file_name=f'production New cases for {selectionbox2}.csv',
-             )
-    else:
-         dfcovid=dfcountryselection[['Date','New Deaths']]
-         dfcovid19=dfcovid.groupby('Date').sum()
-         futuerdf=dfcovid19.reset_index()
-         dfcovid19 = dfcovid19.asfreq('D')
-         exp = TimeSeriesExperiment()
-         exp.setup(dfcovid19, fh = sliderfh, fold = 3, session_id = 123)
-         #exp.plot_model(plot = 'ts',display_format='streamlit')
-         model = exp.create_model("ets")
-         tuned_model = exp.tune_model(model, search_algorithm='grid')
-         # Trains the model with the best hyperparameters on the entire dataset now
-         final_model = exp.finalize_model(tuned_model)
-         exp.plot_model(final_model,display_format='streamlit')
-         prodection=exp.predict_model(final_model,round=0)
-         
-         prodection.reset_index(drop=True,inplace=True)
-         prodection=pd.DataFrame(prodection)
-         date=futuerdf['Date'].tail(1).to_string(index=False)
-         Date=pd.date_range(start=date,periods=2)
-         Date=pd.DataFrame(Date,columns=["Date"])
-         Date=Date["Date"].tail(1).to_string(index=False)
-         Date=pd.date_range(start=Date,periods=sliderfh)
-         Date=pd.DataFrame(Date,columns=["Date"])
-         prodection=prodection.join(Date['Date'])
-         prodection=prodection[['Date','New Deaths']]
-         prodection['Date']=prodection['Date'].dt.date
-         prodection['New Deaths']=prodection['New Deaths'].astype(int)
-         prodection.index += 1
-         st.write(prodection)
-         st.download_button(
-         label="Download data as CSV",
-         data=prodection.to_csv(),
-         file_name=f'production  New death for {selectionbox2}.csv',
-             )
+       #  final_model = exp.finalize_model(tuned_model)
+        # exp.plot_model(final_model,display_format='streamlit')
+        # prodection=exp.predict_model(final_model,round=0)
+        # prodection.reset_index(drop=True,inplace=True)
+        # prodection=pd.DataFrame(prodection)
+        # date=futuerdf['Date'].tail(1).to_string(index=False)
+        # Date=pd.date_range(start=date,periods=2)
+        # Date=pd.DataFrame(Date,columns=["Date"])
+        # Date=Date["Date"].tail(1).to_string(index=False)
+        # Date=pd.date_range(start=Date,periods=sliderfh)
+        # Date=pd.DataFrame(Date,columns=["Date"])
+        # prodection=prodection.join(Date['Date'])
+        # prodection=prodection[['Date','New Cases']]
+        # prodection['Date']=prodection['Date'].dt.date
+        # prodection['New Cases']=prodection['New Cases'].astype(int)
+        # prodection.index += 1
+        # st.write(prodection)
+        # st.download_button(
+        # label="Download data as CSV",
+        # data=prodection.to_csv(),
+        # file_name=f'production New cases for {selectionbox2}.csv',
+        #     )
+   # else:
+    #     dfcovid=dfcountryselection[['Date','New Deaths']]
+    #     dfcovid19=dfcovid.groupby('Date').sum()
+    #     futuerdf=dfcovid19.reset_index()
+    #     dfcovid19 = dfcovid19.asfreq('D')
+    #     exp = TimeSeriesExperiment()
+    #     exp.setup(dfcovid19, fh = sliderfh, fold = 3, session_id = 123)
+    #     #exp.plot_model(plot = 'ts',display_format='streamlit')
+    #     model = exp.create_model("ets")
+    #     tuned_model = exp.tune_model(model, search_algorithm='grid')
+    #     # Trains the model with the best hyperparameters on the entire dataset now
+    #     final_model = exp.finalize_model(tuned_model)
+    #     exp.plot_model(final_model,display_format='streamlit')
+    #     prodection=exp.predict_model(final_model,round=0)
+    #     
+    #     prodection.reset_index(drop=True,inplace=True)
+    #     prodection=pd.DataFrame(prodection)
+    #     date=futuerdf['Date'].tail(1).to_string(index=False)
+    #     Date=pd.date_range(start=date,periods=2)
+    #     Date=pd.DataFrame(Date,columns=["Date"])
+    #     Date=Date["Date"].tail(1).to_string(index=False)
+    #     Date=pd.date_range(start=Date,periods=sliderfh)
+    #     Date=pd.DataFrame(Date,columns=["Date"])
+    #     prodection=prodection.join(Date['Date'])
+    #     prodection=prodection[['Date','New Deaths']]
+    #     prodection['Date']=prodection['Date'].dt.date
+    #     prodection['New Deaths']=prodection['New Deaths'].astype(int)
+    #     prodection.index += 1
+    #     st.write(prodection)
+    #     st.download_button(
+    #     label="Download data as CSV",
+    #     data=prodection.to_csv(),
+    #     file_name=f'production  New death for {selectionbox2}.csv',
+    #         )
         
 
 
