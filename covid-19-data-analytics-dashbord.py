@@ -3,7 +3,7 @@ import pandas as pd
 import altair as alt
 import folium
 from streamlit_folium import folium_static
-from pycaret.internal.pycaret_experiment import TimeSeriesExperiment
+#from pycaret.internal.pycaret_experiment import TimeSeriesExperiment
 from transformers import DistilBertTokenizer, DistilBertForQuestionAnswering
 import torch
 import plotly.express as px
