@@ -99,28 +99,31 @@ if my_model == "World Map":
     groubdate.reset_index(inplace=True)
 
     totalconfirmed=groubdate['Confirmed'].tail(1).to_string(index=False)
+    import re
+    totalconfirme=re.sub(r'(\d{3})(?=\d)', r'\1,', str(totalconfirmed)[::-1])[::-1]
+    
     totaldeath=groubdate['deaths'].tail(1).to_string(index=False)
+    totaldeath=re.sub(r'(\d{3})(?=\d)', r'\1,', str(totaldeath)[::-1])[::-1]
 
     atleastonedose=int(totalvacc['people_vaccinated'].tail(1))
+    atleastonedose=re.sub(r'(\d{3})(?=\d)', r'\1,', str(atleastonedose)[::-1])[::-1]
     totalfullyvacci=int(totalvacc['people_fully_vaccinated'].tail(1))
+    totalfullyvacci=re.sub(r'(\d{3})(?=\d)', r'\1,', str(totalfullyvacci)[::-1])[::-1]
     totalvacci=int(totalvacc['total_vaccinations'].tail(1))
+    totalvacci=re.sub(r'(\d{3})(?=\d)', r'\1,', str(totalvacci)[::-1])[::-1]
 
     st.write("\n")
     st.write("\n")
     st.write("\n")
     st.write("\n")
     c1, c2, c3= st.columns(3)
-    c1.metric("Total Confirmed", totalconfirmed)
+    c1.metric("Total Confirmed", totalconfirme)
     c2.metric("Total Death", totaldeath)
     c3.metric('Total doses administered',totalvacci)
 
     cc1, cc2= st.columns(2)
     cc1.metric("Total Fully Vaccinated", totalfullyvacci)
     cc2.metric("Total people Vaccinated at least one dose", atleastonedose)
-         
-
-
-
 
 
     import geopandas as gpd
