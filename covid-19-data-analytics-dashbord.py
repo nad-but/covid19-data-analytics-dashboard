@@ -257,7 +257,6 @@ if my_model == "World Map":
     ).add_to(locat)
 
     folium_static(locat,width=1000,height=600)
-
 elif my_model =='Oman Cases':
     st.markdown("<h1 style='text-align: center;'>Oman Case</h1>", unsafe_allow_html=True)
 
