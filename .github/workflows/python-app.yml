@@ -37,4 +37,8 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Run Streamlit
         run: streamlit run covid-19-data-analytics-dashbord.py
+    - name: Upgrade dependencies
+        run: |
+         pip install --upgrade streamlit
+         pip install --upgrade protobuf
    
