@@ -37,5 +37,18 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Install dependencies
       run: |
-       pip install --upgrade
+       pip install --upgrade streamlit
+       pip install --upgrade pandas
+       pip install --upgrade altair
+       pip install --upgrade folium
+       pip install --upgrade streamlit-folium
+       pip install --upgrade transformers
+       pip install --upgrade torch
+       pip install --upgrade plotly
+       pip install --upgrade numpy
+       pip install --upgrade geopandas
+       pip install --upgrade tokenizers
+       pip install --upgrade protobuf
+       
+       
     
